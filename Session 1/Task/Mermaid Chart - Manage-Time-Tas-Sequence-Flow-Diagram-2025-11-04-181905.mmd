@@ -1,0 +1,27 @@
+sequenceDiagram
+  actor Employee as Employee
+  participant Portal as Portal
+  participant VTS as VTS
+  participant EmailService as EmailService
+  actor Manager as Manager
+
+  Employee ->> Portal:  Login and access Intranet
+  Portal ->> VTS: Authenticate employee using credentials
+  VTS -->> Employee: Display Vacaton Balances and Requests
+  Employee ->> VTS: Create new vacation request for category with an available balance
+
+ alt Request data invalid
+    VTS -->> Employee: Display validation errors and redisplay form
+  else Request data valid
+    VTS ->> Manager: Send vacation request to Manager
+    Manager ->> EmailService: Approve or Disapprove request
+    EmailService ->> Employee: Notify employee of manager decision
+    VTS -->> Manager: Return Manager to home page to view other requests or Leave the application
+  end
+
+ alt Manager Returns to VTS Home Page
+    Manager -->> VTS: Display manager's and employee vacation requests
+  else Manager Leaves the Application
+    Manager ->> Portal: Manager Leaves the application
+  end
+
