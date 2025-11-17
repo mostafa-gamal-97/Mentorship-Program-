@@ -1,0 +1,19 @@
+'Customer' orders 'Order' (0 or many)
+'Order' ordered by 'Customer' (one)
+-------------------------------------------------
+'Product' ordered by 'Order' (0 or many)
+'Order' order for 'Product' (many)
+-------------------------------------------------
+'Category' contains 'Product' (many)
+'Product' belongs to 'Category' (many)
+-------------------------------------------------
+'OrderDetails' is a joining table between
+'Order' and 'Product' many-to-many relationship
+-------------------------------------------------
+
+Summary:
+
+    customers 1 —— * orders
+    orders    1 —— * order_details
+    products  1 —— * order_details
+    categories 1 —— * products

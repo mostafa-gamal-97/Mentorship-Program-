@@ -1,0 +1,40 @@
+1) Write an SQL query to generate a daily report of the total revenue for a specific date.
+	
+	-- Replace '2025-11-16' with your desired date
+
+	SELECT 
+		DATE(order_date) AS order_day,
+		SUM(total_amount) AS total_revenue
+	FROM orders
+	WHERE DATE(order_date) = '2025-11-16'
+	GROUP BY DATE(order_date);
+
+2)Write an SQL query to generate a monthly report of the top-selling products in a given month.
+		
+	-- Replace '2025-11' with your target month
+	
+	SELECT 
+		p.product_id,
+		p.name,
+		SUM(od.quantity) AS total_quantity_sold
+	FROM order_details od
+	JOIN products p ON od.product_id = p.product_id
+	JOIN orders o ON od.order_id = o.order_id
+	WHERE DATE_TRUNC('month', o.order_date) = DATE '2025-11'
+	GROUP BY p.product_id, p.name
+	ORDER BY total_quantity_sold DESC
+	LIMIT 10;
+
+3) Write a SQL query to retrieve a list of customers who have placed orders totaling more than $500 in the past month. Include customer names and their total order amounts.
+	
+	SELECT
+		c.customer_id
+		c.first_name,
+		c.last_name
+		SUM(o.total_amount) AS total_spent
+	FROM customers c
+	JOIN orders o ON c.customer_id = o.customer_id
+	WHERE o.order_date >= DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 month' AND o.order_date < DATE_TRUNC('month', CURRENT_DATE)
+	GROUP BY c.customer_id, c.first_name, c.last_name
+	HAVING SUM(o.total_amount) > 500
+	ORDER BY total_spent DESC;
