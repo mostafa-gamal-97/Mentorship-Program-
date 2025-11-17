@@ -172,9 +172,27 @@ To optimize read-heavy operations, we apply denormalization on key entities:
 - Add a `total_spent` column updated by triggers after every order.
 
 ### 2. Orders Table
-- Add product summary fields (e.g., total_items, most_expensive_item) for analytics.
+- Add product summary fields (e.g., total_items, most_expensive_item if we want) for analytics.
 
 This reduces the number of joins required during reporting while trading off some redundancy.
 
----
+### SQL DDL for Adding Denormalized Fields
 
+
+```sql
+
+-- Add denormalized fields to the customers table
+
+ALTER TABLE customers
+ADD COLUMN total_spent DECIMAL(12,2) NOT NULL DEFAULT 0
+    CHECK (total_spent >= 0);
+
+ALTER TABLE customers
+ADD COLUMN last_order_date TIMESTAMP NULL;
+
+-- Add denormalized field to the orders table
+ALTER TABLE orders
+ADD COLUMN total_items INTEGER NOT NULL DEFAULT 0
+    CHECK (total_items >= 0);
+
+```
