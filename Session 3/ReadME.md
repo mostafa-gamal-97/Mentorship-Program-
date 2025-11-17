@@ -19,6 +19,85 @@ The system includes the following key components:
 
 - **Order_Details** is a joining table between **Order** and **Product** (many-to-many).
 
+This is the SQL schema script for the **E-Commerce Database** creation along with tables.
+
+```sql
+
+-- Create database
+CREATE DATABASE mentorship_session3_ecommerce_db
+WITH OWNER = admin;
+
+-- Customers table
+CREATE TABLE customers (
+    customer_id BIGSERIAL PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password TEXT NOT NULL
+);
+
+-- Orders table
+CREATE TABLE orders (
+    order_id BIGSERIAL PRIMARY KEY,
+    customer_id BIGINT NOT NULL,
+    order_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    total_amount DECIMAL(10,2) NOT NULL 
+        CHECK (total_amount > 0),
+
+    CONSTRAINT fk_order_customer
+        FOREIGN KEY (customer_id)
+        REFERENCES customers(customer_id)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
+);
+
+-- Categories table
+CREATE TABLE categories (
+    category_id BIGSERIAL PRIMARY KEY,
+    category_name VARCHAR(255) UNIQUE NOT NULL
+);
+
+-- Products table
+CREATE TABLE products (
+    product_id BIGSERIAL PRIMARY KEY,
+    category_id BIGINT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10,2) NOT NULL 
+        CHECK (price >= 0),
+    stock_quantity INTEGER NOT NULL DEFAULT 0 
+        CHECK (stock_quantity >= 0),
+
+    CONSTRAINT fk_product_category
+        FOREIGN KEY (category_id)
+        REFERENCES categories(category_id)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
+);
+
+-- Order Details table
+CREATE TABLE order_details (
+    order_details_id BIGSERIAL PRIMARY KEY,
+    order_id BIGINT NOT NULL,
+    product_id BIGINT NOT NULL,
+    quantity INTEGER NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL 
+        CHECK (unit_price >= 0),
+
+    CONSTRAINT fk_order_items_order
+        FOREIGN KEY (order_id)
+        REFERENCES orders(order_id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_order_items_product
+        FOREIGN KEY (product_id)
+        REFERENCES products(product_id)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
+);
+```
+
 
 ### ERD Relationship Overview
 
