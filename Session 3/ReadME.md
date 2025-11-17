@@ -34,7 +34,7 @@ The system includes the following key components:
 
 ## ERD Diagram
 
-<img src="./assets/E-Commerce_DB_ERD.png" width="850">
+<img src="./assets/E-Commerce_DB_ERD.png" width="850" height="600">
 
 ---
 
