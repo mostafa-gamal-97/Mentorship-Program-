@@ -34,7 +34,7 @@ The system includes the following key components:
 
 ## ERD Diagram
 
-![ERD Diagram](./assets/E-Commerce_DB_ERD.png)
+<img src="./assets/E-Commerce_DB_ERD.png" width="850">
 
 ---
 
@@ -68,7 +68,8 @@ LIMIT 10;
 ```
 
 ### 3. Customers Who Spent More Than $500 in the Past Month
-```
+```sql
+
 SELECT
     c.customer_id,
     c.first_name,
