@@ -1,0 +1,6 @@
+I've imported the csv files data into my tables using the Database Console in Inteliji Ultimate.
+
+1) Select Desired Schema
+2) Right Click on Table
+3) Import Data from file
+4) Map csv columns to table columns
