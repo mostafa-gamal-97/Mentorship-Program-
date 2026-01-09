@@ -29,6 +29,7 @@ ORDER BY
 #### Query Execution Plan Before Optimization
 <details> 
 	<summary> EXPLAIN ANALYZE output </summary>
+	```text
 		Sort  (cost=600728.91..600978.91 rows=100000 width=30) (actual time=3594.082..3600.691 rows=100000 loops=1)
 		  Sort Key: c.category_id
 		  Sort Method: external merge  Disk: 4120kB
@@ -47,7 +48,7 @@ ORDER BY
 		  Options: Inlining true, Optimization true, Expressions true, Deforming true
 		  Timing: Generation 3.015 ms, Inlining 15.567 ms, Optimization 92.466 ms, Emission 60.009 ms, Total 171.056 ms
 		Execution Time: 3619.211 ms
-</details>
+</details>```
 
 #### What to Optimize?
 
@@ -65,6 +66,7 @@ ORDER BY
 #### Query Execution Plan After Optimization
 <details> 
 	<summary> EXPLAIN ANALYZE output </summary>
+		```text
 		GroupAggregate  (cost=0.72..411231.77 rows=100000 width=30) (actual time=4.205..2217.296 rows=100000 loops=1)
 		  Group Key: c.category_id
 		  ->  Merge Left Join  (cost=0.72..385256.77 rows=4995000 width=30) (actual time=4.083..1919.396 rows=4995100 loops=1)
@@ -77,7 +79,7 @@ ORDER BY
 		  Options: Inlining false, Optimization false, Expressions true, Deforming true
 		  Timing: Generation 0.378 ms, Inlining 0.000 ms, Optimization 0.237 ms, Emission 3.794 ms, Total 4.409 ms
 		Execution Time: 2222.021 ms
-</details>
+</details>```
 
 ---
 
@@ -104,6 +106,7 @@ ORDER BY
 #### Query Execution Plan Before Optimization
 <details> 
 	<summary> EXPLAIN ANALYZE output </summary>
+	```text
 		Sort  (cost=2601563.16..2614062.75 rows=4999836 width=65) (actual time=9877.241..10142.455 rows=2475000 loops=1)
 		  Sort Key: (sum(o.total_amount)) DESC
 		  Sort Method: external merge  Disk: 120080kB
@@ -122,7 +125,7 @@ ORDER BY
 		  Options: Inlining true, Optimization true, Expressions true, Deforming true
 		  Timing: Generation 0.866 ms, Inlining 9.450 ms, Optimization 34.816 ms, Emission 25.613 ms, Total 70.745 ms
 		Execution Time: 10258.384 ms
-</details>
+</details>```
 
 #### What to Optimize?
 
@@ -144,6 +147,7 @@ Bottleneck: JOIN on orders.customer_id and SUM aggregation.
 #### Query Execution Plan After Optimization
 <details> 
 	<summary> EXPLAIN ANALYZE output </summary>
+	```text
 		Sort  (cost=1908258.20..1920757.79 rows=4999836 width=65) (actual time=5293.470..5555.028 rows=2475000 loops=1)
 		  Sort Key: (sum(o.total_amount)) DESC
 		  Sort Method: external merge  Disk: 120072kB
@@ -159,7 +163,7 @@ Bottleneck: JOIN on orders.customer_id and SUM aggregation.
 		  Options: Inlining true, Optimization true, Expressions true, Deforming true
 		  Timing: Generation 0.359 ms, Inlining 3.794 ms, Optimization 22.500 ms, Emission 19.080 ms, Total 45.734 ms
 		Execution Time: 5607.273 ms
-</details>
+</details>```
 
 ---
 
@@ -184,6 +188,7 @@ LIMIT 1000;
 #### Query Execution Plan Before Optimization
 <details> 
 	<summary> EXPLAIN ANALYZE output </summary>
+		```text
 		Limit  (cost=546374.92..546491.60 rows=1000 width=49) (actual time=3297.895..3370.839 rows=1000 loops=1)
 		  ->  Gather Merge  (cost=546374.92..1508942.13 rows=8250000 width=49) (actual time=3263.542..3336.447 rows=1000 loops=1)
 				Workers Planned: 2
@@ -205,7 +210,7 @@ LIMIT 1000;
 		  Options: Inlining true, Optimization true, Expressions true, Deforming true
 		  Timing: Generation 2.104 ms, Inlining 80.234 ms, Optimization 46.535 ms, Emission 37.991 ms, Total 166.864 ms
 		Execution Time: 3371.878 ms
-</details>
+</details>```
 
 #### What to Optimize?
 
@@ -255,6 +260,7 @@ ORDER BY product_id;
 #### Query Execution Plan Before Optimization
 <details> 
 	<summary> EXPLAIN ANALYZE output </summary>
+		```text
 		Gather Merge  (cost=86538.94..95074.17 rows=73154 width=27) (actual time=126.612..137.561 rows=90000 loops=1)
 		  Workers Planned: 2
 		  Workers Launched: 2
@@ -268,7 +274,7 @@ ORDER BY product_id;
 					  Rows Removed by Filter: 1635000
 		Planning Time: 0.054 ms
 		Execution Time: 139.342 ms
-</details>
+</details>```
 
 #### What to Optimize?
 
@@ -289,6 +295,7 @@ WHERE stock_quantity < 10;
 #### Query Execution Plan After Optimization
 <details> 
 	<summary> EXPLAIN ANALYZE output </summary>
+		```text
 		Limit  (cost=0.87..509.04 rows=1000 width=49) (actual time=0.024..0.881 rows=1000 loops=1)
 		  ->  Nested Loop  (cost=0.87..5030926.34 rows=9900000 width=49) (actual time=0.023..0.842 rows=1000 loops=1)
 				->  Index Scan using idx_orders_order_date_desc on orders o  (cost=0.43..254810.43 rows=9900000 width=24) (actual time=0.009..0.088 rows=1000 loops=1)
@@ -296,7 +303,7 @@ WHERE stock_quantity < 10;
 					  Index Cond: (customer_id = o.customer_id)
 		Planning Time: 0.218 ms
 		Execution Time: 0.954 ms
-</details>
+</details>```
 
 --- 
 
@@ -324,6 +331,7 @@ ORDER BY
 #### Query Execution Plan Before Optimization
 <details> 
 	<summary> EXPLAIN ANALYZE output </summary>
+	```text
 		Sort  (cost=1640805.32..1641055.32 rows=100000 width=54) (actual time=15159.092..15274.609 rows=49450 loops=1)
 		  Sort Key: (sum(((od.quantity)::numeric * od.unit_price))) DESC
 		  Sort Method: quicksort  Memory: 3934kB
@@ -359,7 +367,7 @@ ORDER BY
 		  Options: Inlining true, Optimization true, Expressions true, Deforming true
 		  Timing: Generation 10.081 ms, Inlining 171.305 ms, Optimization 140.484 ms, Emission 110.970 ms, Total 432.840 ms
 		Execution Time: 15301.469 ms
-</details>
+</details>```
 
 #### What to Optimize?
 
@@ -386,6 +394,7 @@ Bottleneck: JOINs across large tables (products + order_details),
 #### Query Execution Plan After Optimization
 <details> 
 	<summary> EXPLAIN ANALYZE output </summary>
+	```text
 		Sort  (cost=1646905.13..1647155.13 rows=100000 width=54) (actual time=11392.803..12314.987 rows=49450 loops=1)
 		  Sort Key: (sum(((od.quantity)::numeric * od.unit_price))) DESC
 		  Sort Method: quicksort  Memory: 3934kB
@@ -422,5 +431,5 @@ Bottleneck: JOINs across large tables (products + order_details),
 		  Timing: Generation 3.414 ms, Inlining 152.894 ms, Optimization 172.536 ms, Emission 125.119 ms, Total 453.963 ms
 		Execution Time: 12334.769 ms
 
-</details>
+</details>```
 
