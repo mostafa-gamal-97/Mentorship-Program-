@@ -48,7 +48,8 @@ ORDER BY
 		  Options: Inlining true, Optimization true, Expressions true, Deforming true
 		  Timing: Generation 3.015 ms, Inlining 15.567 ms, Optimization 92.466 ms, Emission 60.009 ms, Total 171.056 ms
 		Execution Time: 3619.211 ms
-</details>```
+	```
+</details>
 
 #### What to Optimize?
 
@@ -79,7 +80,8 @@ ORDER BY
 		  Options: Inlining false, Optimization false, Expressions true, Deforming true
 		  Timing: Generation 0.378 ms, Inlining 0.000 ms, Optimization 0.237 ms, Emission 3.794 ms, Total 4.409 ms
 		Execution Time: 2222.021 ms
-</details>```
+	```
+</details>
 
 ---
 
@@ -125,7 +127,8 @@ ORDER BY
 		  Options: Inlining true, Optimization true, Expressions true, Deforming true
 		  Timing: Generation 0.866 ms, Inlining 9.450 ms, Optimization 34.816 ms, Emission 25.613 ms, Total 70.745 ms
 		Execution Time: 10258.384 ms
-</details>```
+	```
+</details>
 
 #### What to Optimize?
 
@@ -163,7 +166,8 @@ Bottleneck: JOIN on orders.customer_id and SUM aggregation.
 		  Options: Inlining true, Optimization true, Expressions true, Deforming true
 		  Timing: Generation 0.359 ms, Inlining 3.794 ms, Optimization 22.500 ms, Emission 19.080 ms, Total 45.734 ms
 		Execution Time: 5607.273 ms
-</details>```
+	```
+</details>
 
 ---
 
@@ -210,7 +214,8 @@ LIMIT 1000;
 		  Options: Inlining true, Optimization true, Expressions true, Deforming true
 		  Timing: Generation 2.104 ms, Inlining 80.234 ms, Optimization 46.535 ms, Emission 37.991 ms, Total 166.864 ms
 		Execution Time: 3371.878 ms
-</details>```
+		```
+</details>
 
 #### What to Optimize?
 
@@ -232,6 +237,7 @@ Speeds up JOIN + ORDER BY if needed.
 #### Query Execution Plan After Optimization
 <details> 
 	<summary> EXPLAIN ANALYZE output </summary>
+	```text
 		Limit  (cost=0.87..509.04 rows=1000 width=49) (actual time=0.018..1.494 rows=1000 loops=1)
 		  ->  Nested Loop  (cost=0.87..5030926.34 rows=9900000 width=49) (actual time=0.017..1.433 rows=1000 loops=1)
 				->  Index Scan using idx_orders_order_date_desc on orders o  (cost=0.43..254810.43 rows=9900000 width=24) (actual time=0.010..0.160 rows=1000 loops=1)
@@ -239,6 +245,7 @@ Speeds up JOIN + ORDER BY if needed.
 					  Index Cond: (customer_id = o.customer_id)
 		Planning Time: 0.289 ms
 		Execution Time: 1.542 ms
+	```
 </details>
 
 ---
@@ -274,7 +281,8 @@ ORDER BY product_id;
 					  Rows Removed by Filter: 1635000
 		Planning Time: 0.054 ms
 		Execution Time: 139.342 ms
-</details>```
+	```
+</details>
 
 #### What to Optimize?
 
@@ -295,7 +303,7 @@ WHERE stock_quantity < 10;
 #### Query Execution Plan After Optimization
 <details> 
 	<summary> EXPLAIN ANALYZE output </summary>
-		```text
+	```text
 		Limit  (cost=0.87..509.04 rows=1000 width=49) (actual time=0.024..0.881 rows=1000 loops=1)
 		  ->  Nested Loop  (cost=0.87..5030926.34 rows=9900000 width=49) (actual time=0.023..0.842 rows=1000 loops=1)
 				->  Index Scan using idx_orders_order_date_desc on orders o  (cost=0.43..254810.43 rows=9900000 width=24) (actual time=0.009..0.088 rows=1000 loops=1)
@@ -303,7 +311,8 @@ WHERE stock_quantity < 10;
 					  Index Cond: (customer_id = o.customer_id)
 		Planning Time: 0.218 ms
 		Execution Time: 0.954 ms
-</details>```
+	```
+</details>
 
 --- 
 
@@ -367,7 +376,8 @@ ORDER BY
 		  Options: Inlining true, Optimization true, Expressions true, Deforming true
 		  Timing: Generation 10.081 ms, Inlining 171.305 ms, Optimization 140.484 ms, Emission 110.970 ms, Total 432.840 ms
 		Execution Time: 15301.469 ms
-</details>```
+	```
+</details>
 
 #### What to Optimize?
 
@@ -430,6 +440,6 @@ Bottleneck: JOINs across large tables (products + order_details),
 		  Options: Inlining true, Optimization true, Expressions true, Deforming true
 		  Timing: Generation 3.414 ms, Inlining 152.894 ms, Optimization 172.536 ms, Emission 125.119 ms, Total 453.963 ms
 		Execution Time: 12334.769 ms
-
-</details>```
+	```
+</details>
 
